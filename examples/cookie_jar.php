@@ -1,13 +1,13 @@
 <?php
 
 // First, include Requests
-include('../library/Requests.php');
+require_once dirname(dirname(__FILE__)) . '/library/Requests.php';
 
 // Next, make sure Requests can load internal classes
 Requests::register_autoloader();
 
 // Say you need to fake a login cookie
-$c = new Requests_Cookie_Jar(['login_uid' =>  'something']);
+$c = new Requests_Cookie_Jar(['login_uid' => 'something']);
 
 // Now let's make a request!
 $request = Requests::get(

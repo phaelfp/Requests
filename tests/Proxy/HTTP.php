@@ -30,15 +30,15 @@ class RequestsTest_Proxy_HTTP extends PHPUnit_Framework_TestCase {
 	public function testConnectWithString($transport) {
 		$this->checkProxyAvailable();
 
-		$options = array(
-			'proxy' => REQUESTS_HTTP_PROXY,
+		$options  = array(
+			'proxy'     => REQUESTS_HTTP_PROXY,
 			'transport' => $transport,
 		);
 		$response = Requests::get(httpbin('/get'), array(), $options);
-		$this->assertEquals('http', $response->headers['x-requests-proxied']);
+		$this->assertSame('http', $response->headers['x-requests-proxied']);
 
 		$data = json_decode($response->body, true);
-		$this->assertEquals('http', $data['headers']['x-requests-proxy']);
+		$this->assertSame('http', $data['headers']['x-requests-proxy']);
 	}
 
 	/**
@@ -47,29 +47,31 @@ class RequestsTest_Proxy_HTTP extends PHPUnit_Framework_TestCase {
 	public function testConnectWithArray($transport) {
 		$this->checkProxyAvailable();
 
-		$options = array(
-			'proxy' => array(REQUESTS_HTTP_PROXY),
+		$options  = array(
+			'proxy'     => array(REQUESTS_HTTP_PROXY),
 			'transport' => $transport,
 		);
 		$response = Requests::get(httpbin('/get'), array(), $options);
-		$this->assertEquals('http', $response->headers['x-requests-proxied']);
+		$this->assertSame('http', $response->headers['x-requests-proxied']);
 
 		$data = json_decode($response->body, true);
-		$this->assertEquals('http', $data['headers']['x-requests-proxy']);
+		$this->assertSame('http', $data['headers']['x-requests-proxy']);
 	}
 
 	/**
 	 * @dataProvider transportProvider
-	 * @expectedException Requests_Exception
+	 *
+	 * @expectedException        Requests_Exception
+	 * @expectedExceptionMessage Invalid number of arguments
 	 */
 	public function testConnectInvalidParameters($transport) {
 		$this->checkProxyAvailable();
 
 		$options = array(
-			'proxy' => array(REQUESTS_HTTP_PROXY, 'testuser', 'password', 'something'),
+			'proxy'     => array(REQUESTS_HTTP_PROXY, 'testuser', 'password', 'something'),
 			'transport' => $transport,
 		);
-		$response = Requests::get(httpbin('/get'), array(), $options);
+		Requests::get(httpbin('/get'), array(), $options);
 	}
 
 	/**
@@ -78,15 +80,15 @@ class RequestsTest_Proxy_HTTP extends PHPUnit_Framework_TestCase {
 	public function testConnectWithInstance($transport) {
 		$this->checkProxyAvailable();
 
-		$options = array(
-			'proxy' => new Requests_Proxy_HTTP(REQUESTS_HTTP_PROXY),
+		$options  = array(
+			'proxy'     => new Requests_Proxy_HTTP(REQUESTS_HTTP_PROXY),
 			'transport' => $transport,
 		);
 		$response = Requests::get(httpbin('/get'), array(), $options);
-		$this->assertEquals('http', $response->headers['x-requests-proxied']);
+		$this->assertSame('http', $response->headers['x-requests-proxied']);
 
 		$data = json_decode($response->body, true);
-		$this->assertEquals('http', $data['headers']['x-requests-proxy']);
+		$this->assertSame('http', $data['headers']['x-requests-proxy']);
 	}
 
 	/**
@@ -95,20 +97,20 @@ class RequestsTest_Proxy_HTTP extends PHPUnit_Framework_TestCase {
 	public function testConnectWithAuth($transport) {
 		$this->checkProxyAvailable('auth');
 
-		$options = array(
-			'proxy' => array(
+		$options  = array(
+			'proxy'     => array(
 				REQUESTS_HTTP_PROXY_AUTH,
 				REQUESTS_HTTP_PROXY_AUTH_USER,
-				REQUESTS_HTTP_PROXY_AUTH_PASS
+				REQUESTS_HTTP_PROXY_AUTH_PASS,
 			),
 			'transport' => $transport,
 		);
 		$response = Requests::get(httpbin('/get'), array(), $options);
-		$this->assertEquals(200, $response->status_code);
-		$this->assertEquals('http', $response->headers['x-requests-proxied']);
+		$this->assertSame(200, $response->status_code);
+		$this->assertSame('http', $response->headers['x-requests-proxied']);
 
 		$data = json_decode($response->body, true);
-		$this->assertEquals('http', $data['headers']['x-requests-proxy']);
+		$this->assertSame('http', $data['headers']['x-requests-proxy']);
 	}
 
 	/**
@@ -117,15 +119,15 @@ class RequestsTest_Proxy_HTTP extends PHPUnit_Framework_TestCase {
 	public function testConnectWithInvalidAuth($transport) {
 		$this->checkProxyAvailable('auth');
 
-		$options = array(
-			'proxy' => array(
+		$options  = array(
+			'proxy'     => array(
 				REQUESTS_HTTP_PROXY_AUTH,
 				REQUESTS_HTTP_PROXY_AUTH_USER . '!',
-				REQUESTS_HTTP_PROXY_AUTH_PASS . '!'
+				REQUESTS_HTTP_PROXY_AUTH_PASS . '!',
 			),
 			'transport' => $transport,
 		);
 		$response = Requests::get(httpbin('/get'), array(), $options);
-		$this->assertEquals(407, $response->status_code);
+		$this->assertSame(407, $response->status_code);
 	}
 }

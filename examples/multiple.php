@@ -1,7 +1,7 @@
 <?php
 
 // First, include Requests
-include('../library/Requests.php');
+require_once dirname(dirname(__FILE__)) . '/library/Requests.php';
 
 // Next, make sure Requests can load internal classes
 Requests::register_autoloader();
@@ -9,15 +9,15 @@ Requests::register_autoloader();
 // Setup what we want to request
 $requests = array(
 	array(
-		'url' => 'http://httpbin.org/get',
+		'url'     => 'http://httpbin.org/get',
 		'headers' => array('Accept' => 'application/javascript'),
 	),
-	'post' => array(
-		'url' => 'http://httpbin.org/post',
+	'post'    => array(
+		'url'  => 'http://httpbin.org/post',
 		'data' => array('mydata' => 'something'),
 	),
 	'delayed' => array(
-		'url' => 'http://httpbin.org/delay/10',
+		'url'     => 'http://httpbin.org/delay/10',
 		'options' => array(
 			'timeout' => 20,
 		),

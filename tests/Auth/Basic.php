@@ -2,11 +2,10 @@
 
 class RequestsTest_Auth_Basic extends PHPUnit_Framework_TestCase {
 	public static function transportProvider() {
-		$transports = array(
+		return array(
 			array('Requests_Transport_fsockopen'),
 			array('Requests_Transport_cURL'),
 		);
-		return $transports;
 	}
 
 	/**
@@ -19,15 +18,15 @@ class RequestsTest_Auth_Basic extends PHPUnit_Framework_TestCase {
 		}
 
 		$options = array(
-			'auth' => array('user', 'passwd'),
+			'auth'      => array('user', 'passwd'),
 			'transport' => $transport,
 		);
 		$request = Requests::get(httpbin('/basic-auth/user/passwd'), array(), $options);
-		$this->assertEquals(200, $request->status_code);
+		$this->assertSame(200, $request->status_code);
 
 		$result = json_decode($request->body);
-		$this->assertEquals(true, $result->authenticated);
-		$this->assertEquals('user', $result->user);
+		$this->assertTrue($result->authenticated);
+		$this->assertSame('user', $result->user);
 	}
 
 	/**
@@ -40,15 +39,15 @@ class RequestsTest_Auth_Basic extends PHPUnit_Framework_TestCase {
 		}
 
 		$options = array(
-			'auth' => new Requests_Auth_Basic(array('user', 'passwd')),
+			'auth'      => new Requests_Auth_Basic(array('user', 'passwd')),
 			'transport' => $transport,
 		);
 		$request = Requests::get(httpbin('/basic-auth/user/passwd'), array(), $options);
-		$this->assertEquals(200, $request->status_code);
+		$this->assertSame(200, $request->status_code);
 
 		$result = json_decode($request->body);
-		$this->assertEquals(true, $result->authenticated);
-		$this->assertEquals('user', $result->user);
+		$this->assertTrue($result->authenticated);
+		$this->assertSame('user', $result->user);
 	}
 
 	/**
@@ -61,27 +60,28 @@ class RequestsTest_Auth_Basic extends PHPUnit_Framework_TestCase {
 		}
 
 		$options = array(
-			'auth' => new Requests_Auth_Basic(array('user', 'passwd')),
+			'auth'      => new Requests_Auth_Basic(array('user', 'passwd')),
 			'transport' => $transport,
 		);
-		$data = 'test';
+		$data    = 'test';
 		$request = Requests::post(httpbin('/post'), array(), $data, $options);
-		$this->assertEquals(200, $request->status_code);
+		$this->assertSame(200, $request->status_code);
 
 		$result = json_decode($request->body);
 
 		$auth = $result->headers->Authorization;
 		$auth = explode(' ', $auth);
 
-		$this->assertEquals(base64_encode('user:passwd'), $auth[1]);
-        $this->assertEquals('test', $result->data);
+		$this->assertSame(base64_encode('user:passwd'), $auth[1]);
+		$this->assertSame('test', $result->data);
 	}
 
 	/**
-	 * @expectedException Requests_Exception
+	 * @expectedException        Requests_Exception
+	 * @expectedExceptionMessage Invalid number of arguments
 	 */
 	public function testMissingPassword() {
-		$auth = new Requests_Auth_Basic(array('user'));
+		new Requests_Auth_Basic(array('user'));
 	}
 
 }

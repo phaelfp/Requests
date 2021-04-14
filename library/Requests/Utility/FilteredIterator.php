@@ -42,4 +42,20 @@ class Requests_Utility_FilteredIterator extends ArrayIterator {
 		$value = call_user_func($this->callback, $value);
 		return $value;
 	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function unserialize($serialized) {}
+
+	/**
+	 * @inheritdoc
+	 *
+	 * @phpcs:disable PHPCompatibility.FunctionNameRestrictions.NewMagicMethods.__unserializeFound
+	 */
+	public function __unserialize($serialized) {}
+
+	public function __wakeup() {
+		unset($this->callback);
+	}
 }

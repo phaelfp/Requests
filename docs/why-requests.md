@@ -16,8 +16,8 @@ Why should I use Requests?
    necessarily going to be available on every system. While you're welcome to
    require PHP 5.3, 5.4 or even 5.5, it's not our job to force you to use those.
 
-   (The WordPress project estimates [about 60%][wpstats] of hosts are running
-   PHP 5.2, so this is a serious issue for developers working on large
+   (The WordPress project estimates [about 1.5%][wpstats] of hosts are running
+   PHP 5.2, so this may be an issue for developers working on large
    deployable projects.)
 
    Don't worry though, Requests will automatically use better features where
@@ -64,8 +64,8 @@ Why should I use Requests?
 
 [coveralls]: https://coveralls.io/r/rmccue/Requests
 [hooking system]: hooks.md
-[requests_ssl]: https://github.com/rmccue/Requests/blob/master/library/Requests/SSL.php
-[travis]: https://travis-ci.org/rmccue/Requests
+[requests_ssl]: https://github.com/WordPress/Requests/blob/master/library/Requests/SSL.php
+[travis]: https://travis-ci.org/WordPress/Requests
 [wpssl]: http://core.trac.wordpress.org/ticket/25007
 
 
@@ -190,3 +190,9 @@ instead of something else, in our opinion.
 
    Similar to HTTP_Request2, Zend's client is not fully self-contained and
    requires other components from the framework.
+
+***
+
+Previous: [Goals](goals.md)
+
+Next: [Making a request](usage.md)

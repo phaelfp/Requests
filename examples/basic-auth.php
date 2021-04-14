@@ -1,14 +1,14 @@
 <?php
 
 // First, include Requests
-include('../library/Requests.php');
+require_once dirname(dirname(__FILE__)) . '/library/Requests.php';
 
 // Next, make sure Requests can load internal classes
 Requests::register_autoloader();
 
 // Now let's make a request!
 $options = array(
-	'auth' => array('someuser', 'password')
+	'auth' => array('someuser', 'password'),
 );
 $request = Requests::get('http://httpbin.org/basic-auth/someuser/password', array(), $options);
 
